@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>AI Assistant</title>
+<title>AI Assistant — Pro</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
 
@@ -161,9 +161,9 @@
     line-height: 1; margin-bottom: 4px;
   }
   .welcome h2 { font-family: 'Instrument Serif', serif; font-size: 20px; font-weight: 400; }
-  .welcome p { font-size: 13px; color: var(--sub); line-height: 1.6; max-width: 300px; }
+  .welcome p { font-size: 13px; color: var(--sub); line-height: 1.6; max-width: 380px; }
 
-  .chips { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; margin-top: 6px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; margin-top: 12px; }
   .chip {
     font-size: 12px; padding: 6px 13px; border-radius: 20px;
     border: 1px solid var(--border); background: var(--s2);
@@ -313,7 +313,7 @@
 <header>
   <div class="logo">✦</div>
   <div>
-    <div class="title">AI Assistant</div>
+    <div class="title">AI Assistant — Pro</div>
     <div class="status"><span class="dot"></span>online</div>
   </div>
   <div class="hdr-right">
@@ -325,30 +325,30 @@
 <!-- MODE BAR -->
 <div id="mode-bar">
   <span class="mode-label">Режим:</span>
-  <button class="mode-btn active" data-mode="universal" onclick="setMode(this)">Универсальный</button>
-  <button class="mode-btn" data-mode="design" onclick="setMode(this)">🎨 Дизайн</button>
-  <button class="mode-btn" data-mode="code" onclick="setMode(this)">💻 Код</button>
-  <button class="mode-btn" data-mode="narrative" onclick="setMode(this)">✍️ Нарратив</button>
+  <button class="mode-btn active" data-mode="universal" onclick="setMode(this)">Universal</button>
+  <button class="mode-btn" data-mode="design" onclick="setMode(this)">🎨 Design</button>
+  <button class="mode-btn" data-mode="code" onclick="setMode(this)">💻 Code</button>
+  <button class="mode-btn" data-mode="narrative" onclick="setMode(this)">✍️ Narrative</button>
   <div class="mode-sep"></div>
   <button class="deep-btn" id="deep-btn" onclick="toggleDeep()">
-    <span class="deep-icon">🔬</span> Глубокий анализ
+    <span class="deep-icon">🔬</span> Deep
   </button>
 </div>
 
 <div id="chat">
   <div class="welcome" id="welcome">
     <div class="welcome-glyph">✦</div>
-    <h2>С чего начнём?</h2>
-    <p>Анализирую, разбираю, создаю — дизайн, код, нарратив, изображения. Без шаблонов.</p>
+    <h2>Professional Analysis Mode</h2>
+    <p>Art direction, code architecture, narrative analysis. Senior-level critique, zero tolerance for mediocrity.</p>
     <div class="chips" id="chips-container">
-      <div class="chip">Гайд: композиция панелей вебтуна</div>
-      <div class="chip">Разбор цветовой палитры референса</div>
-      <div class="chip">Стиль персонажа: тёмное фэнтези</div>
-      <div class="chip">Промпт для Midjourney / Stable Diffusion</div>
-      <div class="chip">Атмосфера и эстетика сцены</div>
-      <div class="chip">Описание персонажа для вебтуна</div>
-      <div class="chip">Разбор кода: найди проблему</div>
-      <div class="chip">Мудборд: как собрать и читать</div>
+      <div class="chip">Color hierarchy issue: why composition falls apart</div>
+      <div class="chip">Code architecture: where this will break at scale</div>
+      <div class="chip">Character voice: inconsistency in dialogue</div>
+      <div class="chip">Material read: gloss/roughness perception</div>
+      <div class="chip">Line confidence: pressure variance & construction</div>
+      <div class="chip">Scene pacing: rhythm & emotional beats</div>
+      <div class="chip">Design system violation: inheritance vs composition</div>
+      <div class="chip">Render depth: SSS & environmental reflection</div>
     </div>
   </div>
 </div>
@@ -357,12 +357,12 @@
 
 <div id="input-area">
   <div class="input-row">
-    <button class="iBtn" onclick="document.getElementById('file-input').click()" title="Прикрепить изображение">🖼</button>
+    <button class="iBtn" onclick="document.getElementById('file-input').click()" title="Attach image">🖼</button>
     <input type="file" id="file-input" accept="image/*" multiple>
-    <textarea id="message-input" placeholder="Спроси что угодно или загрузи изображение..." rows="1"></textarea>
+    <textarea id="message-input" placeholder="Paste image or ask. No beginner questions." rows="1"></textarea>
     <button class="iBtn" id="send-btn" onclick="sendMessage()">↑</button>
   </div>
-  <div class="hint">Enter — отправить · Shift+Enter — новая строка</div>
+  <div class="hint">Enter — send · Shift+Enter — new line</div>
 </div>
 
 <script>
@@ -373,16 +373,7 @@ var loading = false;
 var currentMode = 'universal';
 var deepMode = false;
 
-// ── MODE SYSTEM ───────────────────────────────────────────────────────────────
-var MODE_PROMPTS = {
-  universal: '',
-  design: '\n\nТекущий режим: ДИЗАЙН. Смотри на задачу глазами арт-директора. Каждое решение обосновывай через визуальный эффект и восприятие. Называй конкретные техники, цвета (#hex), шрифты, отступы.',
-  code: '\n\nТекущий режим: КОД. Отвечай как senior-разработчик. Код — полный, рабочий, без заглушек. Объясняй архитектурные решения, не только синтаксис. Если контекст влияет на решение — задай один точечный вопрос.',
-  narrative: '\n\nТекущий режим: НАРРАТИВ. Работай как опытный редактор. Чувствуй ритм текста, характер персонажей, атмосферу сцены. Каждое слово несёт вес. Указывай конкретно что работает и почему, что нет и как исправить одним действием.'
-};
-
-var DEEP_PROMPT = '\n\nРЕЖИМ ГЛУБОКОГО АНАЛИЗА: Не останавливайся на очевидном. Копай до второго и третьего слоя смысла. Выявляй скрытые закономерности, противоречия, нераскрытый потенциал. Давай развёрнутый экспертный разбор с конкретными примерами и альтернативными решениями. Длина ответа — столько, сколько нужно для исчерпывающего ответа.';
-
+// ── MODE SYSTEM ─────────────────────────────────────────────────────────────────
 function setMode(btn) {
   document.querySelectorAll('.mode-btn').forEach(function(b) { b.classList.remove('active'); });
   btn.classList.add('active');
@@ -399,15 +390,7 @@ function toggleDeep() {
   }
 }
 
-function buildSystemPrompt() {
-  var base = 'Ты — эксперт с настоящим вкусом и насмотренностью. Не инструмент. Не помощник. Партнёр с позицией.\n\nТы умеешь работать с чем угодно:\nВизуальное искусство, иллюстрация, манга, вебтун, дизайн, типографика, цвет, композиция, стиль, эстетика — на уровне арт-директора топового издательства.\nКод, архитектура, деплой, дебаггинг — на уровне senior-разработчика.\nСценарии, описания, нарратив, диалоги, промпты для ИИ — на уровне опытного редактора.\nАналитика трендов, разбор референсов, конкурентный анализ — на уровне исследователя индустрии.\n\nКАК ТЫ ЧИТАЕШЬ ЗАПРОС:\nКогда человек пишет коротко — читай между строк и действуй. Но есть исключение: если задача техническая (код, деплой, баг, настройка) и правильность ответа зависит от стека, платформы или версии — задай ровно один точечный вопрос. Не список, не допрос. Один вопрос, который закрывает главную неопределённость.\n\nКогда человек пишет много и подробно — вычленяй суть, не теряйся в деталях, не выдавай кашу. Главное всегда остаётся главным.\n\nКогда загружают изображение — не описывай что на нём нарисовано. Анализируй: какие техники использованы, что работает и почему, что слабо и как исправить, какие конкретные приёмы взять себе.\n\nКАК ТЫ ОТВЕЧАЕШЬ:\nНикогда не начинаешь с "Отлично!", "Конечно!", "Давайте разберёмся". Сразу к сути.\nНикогда не даёшь общие советы — только конкретика с точными названиями, значениями, параметрами.\nНикогда не выдумываешь факты. Если не знаешь точно — говоришь прямо и даёшь то, что знаешь достоверно.\nНикогда не используешь расплывчатые формулировки: "примерно", "где-то", "можно попробовать".\nНикогда не пишешь шаблонные отписки — каждый ответ сделан под конкретный запрос.\n\nДлина ответа — ровно столько, сколько нужно. Не обрезаешь важное, не растягиваешь лишним.\n\nФОРМАТ — выбираешь сам исходя из задачи:\n\nЕсли нужен гайд:\n## Название\nЦель: одна строка | Результат: что получишь | Время: реальная оценка\n---\n### Шаг 1 — Глагол + конкретное действие\nТочная инструкция. Конкретные значения. Никаких "настрой по вкусу".\n> Инсайт: почему именно так, скрытый нюанс, частая ошибка\n---\nТипичные ошибки: конкретно что идёт не так и почему\nПроверка: один критерий по которому понятно что всё правильно\n\nЕсли нужен просто ответ — отвечаешь прямо, без лишней структуры.\nЕсли нужен код — рабочий, полный, без заглушек и TODO.\nЕсли нужен анализ — выводы сначала, детали потом.\nЕсли нужна идея — конкретная и реализуемая, не абстрактная.\n\nВКУС И СТИЛЬ:\nТы понимаешь разницу между "красиво" и "правильно". Между "модно" и "работает". Между "технически верно" и "живёт".\nКогда видишь что запрос можно сделать лучше — делаешь лучше и объясняешь почему.\nИмеешь позицию. Не соглашаешься с плохими решениями молча.\n\nЯзык ответа всегда совпадает с языком запроса.';
-
-  base += MODE_PROMPTS[currentMode] || '';
-  if (deepMode) base += DEEP_PROMPT;
-  return base;
-}
-
-// ── MARKDOWN ──────────────────────────────────────────────────────────────────
+// ── MARKDOWN ─────────────────────────────────────────────────────────────────────
 function renderMarkdown(raw) {
   var html = raw;
 
@@ -416,7 +399,7 @@ function renderMarkdown(raw) {
     var label = lang || 'code';
     var escaped = code.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
     var id = 'cb' + Math.random().toString(36).slice(2, 8);
-    return '<div class="code-block"><div class="code-header"><span>' + label + '</span><button class="code-copy" onclick="copyCode(\'' + id + '\', this)">копировать</button></div><pre id="' + id + '">' + escaped.trimEnd() + '</pre></div>';
+    return '<div class="code-block"><div class="code-header"><span>' + label + '</span><button class="code-copy" onclick="copyCode(\'' + id + '\', this)">copy</button></div><pre id="' + id + '">' + escaped + '</pre></div>';
   });
 
   html = html.replace(/^## (.+)$/gm, '<h2>$1</h2>');
@@ -442,10 +425,10 @@ function copyCode(id, btn) {
   if (!el) return;
   navigator.clipboard.writeText(el.innerText).catch(function(){});
   btn.textContent = '✓';
-  setTimeout(function(){ btn.textContent = 'копировать'; }, 1500);
+  setTimeout(function(){ btn.textContent = 'copy'; }, 1500);
 }
 
-// ── ATTACHMENTS ───────────────────────────────────────────────────────────────
+// ── ATTACHMENTS ─────────────────────────────────────────────────────────────────────
 document.getElementById('file-input').addEventListener('change', function(e) {
   var files = Array.from(e.target.files);
   var promises = files.map(function(file) {
@@ -487,7 +470,7 @@ function removeImg(i) {
   renderAttachments();
 }
 
-// ── INPUT ─────────────────────────────────────────────────────────────────────
+// ── INPUT ───────────────────────────────────────────────────────────────────────
 var textarea = document.getElementById('message-input');
 
 textarea.addEventListener('input', function() {
@@ -513,7 +496,7 @@ function attachChips() {
 }
 attachChips();
 
-// ── MESSAGES ──────────────────────────────────────────────────────────────────
+// ── MESSAGES ────────────────────────────────────────────────────────────────────
 function escHtml(s) {
   return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 }
@@ -535,7 +518,7 @@ function addMessage(role, text, imgUrls) {
 
   var content = role === 'user' ? escHtml(text) : renderMarkdown(text);
 
-  g.innerHTML = '<div class="msg-label">' + (role === 'user' ? 'Вы' : 'AI') + deepTag + copyBtn + '</div>' + imgs + '<div class="bubble" id="' + bubbleId + '">' + content + '</div>';
+  g.innerHTML = '<div class="msg-label">' + (role === 'user' ? 'You' : 'AI') + deepTag + copyBtn + '</div>' + imgs + '<div class="bubble" id="' + bubbleId + '">' + content + '</div>';
 
   chat.appendChild(g);
   chat.scrollTop = chat.scrollHeight;
@@ -567,16 +550,16 @@ function hideTyping() {
   if (t) t.remove();
 }
 
-// ── CLEAR ─────────────────────────────────────────────────────────────────────
+// ── CLEAR ───────────────────────────────────────────────────────────────────────
 function clearChat() {
   history = [];
   images = [];
   renderAttachments();
-  document.getElementById('chat').innerHTML = '<div class="welcome" id="welcome"><div class="welcome-glyph">✦</div><h2>С чего начнём?</h2><p>Анализирую, разбираю, создаю — дизайн, код, нарратив, изображения. Без шаблонов.</p><div class="chips" id="chips-container"><div class="chip">Гайд: композиция панелей вебтуна</div><div class="chip">Разбор цветовой палитры референса</div><div class="chip">Стиль персонажа: тёмное фэнтези</div><div class="chip">Промпт для Midjourney / Stable Diffusion</div><div class="chip">Атмосфера и эстетика сцены</div><div class="chip">Описание персонажа для вебтуна</div><div class="chip">Разбор кода: найди проблему</div><div class="chip">Мудборд: как собрать и читать</div></div></div>';
+  document.getElementById('chat').innerHTML = '<div class="welcome" id="welcome"><div class="welcome-glyph">✦</div><h2>Professional Analysis Mode</h2><p>Art direction, code architecture, narrative analysis. Senior-level critique, zero tolerance for mediocrity.</p><div class="chips" id="chips-container"><div class="chip">Color hierarchy issue: why composition falls apart</div><div class="chip">Code architecture: where this will break at scale</div><div class="chip">Character voice: inconsistency in dialogue</div><div class="chip">Material read: gloss/roughness perception</div><div class="chip">Line confidence: pressure variance & construction</div><div class="chip">Scene pacing: rhythm & emotional beats</div><div class="chip">Design system violation: inheritance vs composition</div><div class="chip">Render depth: SSS & environmental reflection</div></div></div>';
   attachChips();
 }
 
-// ── SEND ──────────────────────────────────────────────────────────────────────
+// ── SEND ────────────────────────────────────────────────────────────────────────
 async function sendMessage() {
   if (loading) return;
   var text = textarea.value.trim();
@@ -587,14 +570,14 @@ async function sendMessage() {
 
   var hasImages = images.length > 0;
   var imgUrls = images.map(function(i){ return i.url; });
-  addMessage('user', text || '(изображения)', imgUrls);
+  addMessage('user', text || '(images)', imgUrls);
 
   var content;
   if (hasImages) {
     content = images.map(function(img){
       return { type: 'image_url', image_url: { url: 'data:' + img.mime + ';base64,' + img.base64 } };
     });
-    content.push({ type: 'text', text: text || 'Проанализируй эти изображения.' });
+    content.push({ type: 'text', text: text || 'Analyze.' });
   } else {
     content = text;
   }
@@ -614,7 +597,8 @@ async function sendMessage() {
       body: JSON.stringify({
         messages: history,
         hasImages: hasImages,
-        systemPrompt: buildSystemPrompt()
+        mode: currentMode,
+        deepMode: deepMode
       })
     });
 
@@ -622,7 +606,7 @@ async function sendMessage() {
 
     if (!res.ok) {
       var err = await res.json().catch(function(){ return {}; });
-      addMessage('ai', '❌ Ошибка: ' + (err.error || res.statusText));
+      addMessage('ai', '❌ Error: ' + (err.error || res.statusText));
       loading = false;
       document.getElementById('send-btn').disabled = false;
       return;
@@ -655,7 +639,7 @@ async function sendMessage() {
 
   } catch(err) {
     hideTyping();
-    addMessage('ai', '❌ Ошибка соединения: ' + err.message);
+    addMessage('ai', '❌ Connection error: ' + err.message);
   }
 
   loading = false;
